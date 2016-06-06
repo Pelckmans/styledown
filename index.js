@@ -206,6 +206,8 @@ Styledown.prototype = {
 
   process: function () {
     var highlightHTML = this.highlightHTML.bind(this);
+    var highlightJADE = this.highlightJADE.bind(this);
+
     var p = this.prefix.bind(this);
     var src = this.raw;
 
@@ -220,7 +222,7 @@ Styledown.prototype = {
     sectionize($, 'h2', p, { 'class': p('section'), until: 'h1, h2' });
 
     $('pre').each(function () {
-      unpackExample($(this), p, highlightHTML);
+      unpackExample($(this), p, highlightHTML, highlightJADE);
     });
 
     isolateTextBlocks(this.$, p);
@@ -259,6 +261,14 @@ Styledown.prototype = {
    * highlightHTML():
    * (private) Syntax highlighting helper
    */
+
+  highlightJADE: function (jade) {
+    var Hljs = require('highlight.js');
+
+    jade = Hljs.highlight('json', jade).value;
+    return jade;
+
+  },
 
   highlightHTML: function (html) {
     var Hljs = require('highlight.js');
